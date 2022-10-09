@@ -146,28 +146,28 @@
    :   }
    : ]
 ** III
-   #+begin_src bash :exports both :results file :file /tmp/200-cat.png
+   #+begin_src bash :exports both :results file :file 200-cat.png
      curl --output - https://http.cat/200
    #+end_src
 
    #+RESULTS:
    [[file:/tmp/200-cat.png]]
 
-   #+begin_src bash :exports both :results file :file /tmp/200-cat.png
+   #+begin_src bash :exports both :results file :file 404-cat.png
      curl --output - https://http.cat/404
    #+end_src
 
    #+RESULTS:
    [[file:/tmp/200-cat.png]]
 
-   #+begin_src bash :exports both :results file :file /tmp/200-cat.png
+   #+begin_src bash :exports both :results file :file 502-cat.png
      curl --output - https://http.cat/502
    #+end_src
 
    #+RESULTS:
    [[file:/tmp/200-cat.png]]
 
-   #+begin_src bash :exports both :results file :file /tmp/200-cat.png
+   #+begin_src bash :exports both :results file :file 418-cat.png
      curl --output - https://http.cat/418
    #+end_src
 
