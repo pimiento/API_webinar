@@ -1,25 +1,25 @@
-- [Клиент-серверная архитектура](#org2e02e40)
-- [HTTP](#orgabaee56)
-- [API](#orgb95d05e)
-  - [JSON &#x2013; JavaScript Object Notation](#org4405b68)
-  - [YAML &#x2013; Yet Another Markup Language](#org6ed2d39)
-  - [XML](#org624b538)
-  - [BJSON (binary)](#org0ec0898)
-  - [ProtoBuf (binary)](#org2da865e)
-  - [I](#org9e8cdaa)
-  - [II](#orgedcaf08)
-  - [III](#org400b726)
-- [Самописный API 1.](#orgac277b5)
-- [Самописный API 2.](#org28d94af)
-- [соединяем всё вместе](#orgc7b62b6)
-- [практика Microservices](#org305b17e)
-  - [API1](#org7ede736)
-  - [API2](#orgae87ae5)
-- [Почитать](#org2a756de)
-- [Вопросы?](#orgddb1a4f)
+- [Клиент-серверная архитектура](#org8f86400)
+- [HTTP](#org82954da)
+- [API](#orgbf84cf5)
+  - [JSON &#x2013; JavaScript Object Notation](#org19eb097)
+  - [YAML &#x2013; Yet Another Markup Language](#org9071a53)
+  - [XML](#org1840b21)
+  - [BJSON (binary)](#org4f4a802)
+  - [ProtoBuf (binary)](#org2d9960f)
+  - [I](#org303f2c9)
+  - [II](#orgd545983)
+  - [III](#org5d78268)
+- [Самописный API 1.](#org33c1c6b)
+- [Самописный API 2.](#org987a5c7)
+- [соединяем всё вместе](#orga72e604)
+- [практика Microservices](#org72fac4d)
+  - [API1](#org9e209b3)
+  - [API2](#org0b271a3)
+- [Почитать](#org869aeb0)
+- [Вопросы?](#orgc4157a9)
 
 
-<a id="org2e02e40"></a>
+<a id="org8f86400"></a>
 
 # Клиент-серверная архитектура
 
@@ -36,7 +36,7 @@ def index(request):
 ```
 
 
-<a id="orgabaee56"></a>
+<a id="org82954da"></a>
 
 # HTTP
 
@@ -51,7 +51,7 @@ curl -v http://example.com 2>&1
                                  Dload  Upload   Total   Spent    Left  Speed
   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0*   Trying 93.184.216.34:80...
 * TCP_NODELAY set
-  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0*   Trying 2606:2800:220:1:248:1893:25c8:1946:80...
+*   Trying 2606:2800:220:1:248:1893:25c8:1946:80...
 * TCP_NODELAY set
 * Immediate connect fail for 2606:2800:220:1:248:1893:25c8:1946: Network is unreachable
 * Connected to example.com (93.184.216.34) port 80 (#0)
@@ -63,20 +63,20 @@ curl -v http://example.com 2>&1
 * Mark bundle as not supporting multiuse
 < HTTP/1.1 200 OK
 < Accept-Ranges: bytes
-< Age: 106613
+< Age: 235682
 < Cache-Control: max-age=604800
 < Content-Type: text/html; charset=UTF-8
-< Date: Sun, 09 Oct 2022 17:06:57 GMT
+< Date: Sun, 09 Oct 2022 17:09:02 GMT
 < Etag: "3147526947+ident"
-< Expires: Sun, 16 Oct 2022 17:06:57 GMT
+< Expires: Sun, 16 Oct 2022 17:09:02 GMT
 < Last-Modified: Thu, 17 Oct 2019 07:18:26 GMT
-< Server: ECS (nyb/1D0F)
+< Server: ECS (nyb/1D1B)
 < Vary: Accept-Encoding
 < X-Cache: HIT
 < Content-Length: 1256
 < 
 { [1256 bytes data]
-100  1256  100  1256    0     0   1306      0 --:--:-- --:--:-- --:--:--  1305
+100  1256  100  1256    0     0   1754      0 --:--:-- --:--:-- --:--:--  1751100  1256  100  1256    0     0   1754      0 --:--:-- --:--:-- --:--:--  1751
 * Connection #0 to host example.com left intact
 <!doctype html>
 <html>
@@ -112,7 +112,7 @@ curl -v http://example.com 2>&1
             width: auto;
         }
     }
-    </style>    
+    </style>
 </head>
 
 <body>
@@ -127,7 +127,7 @@ curl -v http://example.com 2>&1
 ```
 
 
-<a id="orgb95d05e"></a>
+<a id="orgbf84cf5"></a>
 
 # API
 
@@ -136,29 +136,29 @@ curl -v http://example.com 2>&1
 API — Application Programming Interface
 
 
-<a id="org4405b68"></a>
+<a id="org19eb097"></a>
 
 ## JSON &#x2013; JavaScript Object Notation
 
 [&#x2026;] {}, True = true, False = false, None = null
 
 
-<a id="org6ed2d39"></a>
+<a id="org9071a53"></a>
 
 ## YAML &#x2013; Yet Another Markup Language
 
 
-<a id="org624b538"></a>
+<a id="org1840b21"></a>
 
 ## XML
 
 
-<a id="org0ec0898"></a>
+<a id="org4f4a802"></a>
 
 ## BJSON (binary)
 
 
-<a id="org2da865e"></a>
+<a id="org2d9960f"></a>
 
 ## ProtoBuf (binary)
 
@@ -167,7 +167,7 @@ API — Application Programming Interface
 -   GET myapi.ru/?search=foobar&format=json
 
 
-<a id="org9e8cdaa"></a>
+<a id="org303f2c9"></a>
 
 ## I
 
@@ -189,7 +189,7 @@ curl https://svatky.adresa.info/json | jq
 ```
 
 
-<a id="orgedcaf08"></a>
+<a id="orgd545983"></a>
 
 ## II
 
@@ -205,7 +205,7 @@ curl https://svatky.adresa.info/json?date=0710 | jq
     ]
 
 
-<a id="org400b726"></a>
+<a id="org5d78268"></a>
 
 ## III
 
@@ -234,7 +234,7 @@ curl --output - https://http.cat/418
 ![img](418-cat.png)
 
 
-<a id="orgac277b5"></a>
+<a id="org33c1c6b"></a>
 
 # Самописный API 1.
 
@@ -318,14 +318,14 @@ my_server.serve_forever()
 ```
 
 
-<a id="org28d94af"></a>
+<a id="org987a5c7"></a>
 
 # Самописный API 2.
 
-<foobar>
+[foobar]("foobar/")
 
 
-<a id="orgc7b62b6"></a>
+<a id="orga72e604"></a>
 
 # соединяем всё вместе
 
@@ -375,7 +375,7 @@ $(document).ready(function () {
 ```
 
 
-<a id="org305b17e"></a>
+<a id="org72fac4d"></a>
 
 # практика Microservices
 
@@ -537,7 +537,7 @@ $(document).ready(function () {
 ```
 
 
-<a id="org7ede736"></a>
+<a id="org9e209b3"></a>
 
 ## API1
 
@@ -550,7 +550,7 @@ CMD python my_django2.py
 ```
 
 
-<a id="orgae87ae5"></a>
+<a id="org0b271a3"></a>
 
 ## API2
 
@@ -621,14 +621,14 @@ server {
 ```
 
 
-<a id="org2a756de"></a>
+<a id="org869aeb0"></a>
 
 # Почитать
 
 [Ошибки при проектировании API](https://habr.com/ru/company/yandex/blog/442762/)
 
 
-<a id="orgddb1a4f"></a>
+<a id="orgc4157a9"></a>
 
 # Вопросы?
 
