@@ -18,12 +18,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    ports:
-      - 9020:9020
 
   api2:
     build:
       context: foobar
       dockerfile: Dockerfile
-    ports:
-      - 8000:8000

@@ -1,3 +1,13 @@
+#+TITLE: Docker
+#+EMAIL: @pvavilin
+#+AUTHOR: @pvavilin
+#+INFOJS_OPT: view:nil toc:nil ltoc:t mouse:underline buttons:0 path:https://orgmode.org/org-info.js
+#+LATEX_HEADER: \RequirePackage{fancyvrb}
+#+LATEX_HEADER: \DefineVerbatimEnvironment{verbatim}{Verbatim}{fontsize=\scriptsize}
+#+LaTeX_HEADER: \lstset{basicstyle=\scriptsize\ttfamily}
+#+LATEX_HEADER: \usepackage{xlop}
+#+LATEX_HEADER: \usepackage{booktabs}
+#+OPTIONS: \n:t ^:nil num:nil ltoc:nil buttons:nil
 * Клиент-серверная архитектура
   [[file:client_server.png]]
 
@@ -15,37 +25,40 @@
   __[[https://habr.com/ru/post/215117/?ysclid=l8xclejzey771685299][Простым языком об HTTP]]__
 
   #+begin_src bash :exports both :results output code
-    curl -v http://example.com 2>&1
+    curl -v http://example.com/index.html 2>&1
   #+end_src
 
   #+RESULTS:
   #+begin_src bash
     % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                    Dload  Upload   Total   Spent    Left  Speed
-    0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0*   Trying 93.184.216.34:80...
+    0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0*   Trying 2606:2800:220:1:248:1893:25c8:1946:80...
   ,* TCP_NODELAY set
-  ,* Connected to example.com (93.184.216.34) port 80 (#0)
-  > GET / HTTP/1.1
+  ,*   Trying 93.184.216.34:80...
+  ,* TCP_NODELAY set
+  ,* Connected to example.com (2606:2800:220:1:248:1893:25c8:1946) port 80 (#0)
+  > GET /index.html HTTP/1.1
   > Host: example.com
   > User-Agent: curl/7.68.0
   > Accept: */*
   > 
   ,* Mark bundle as not supporting multiuse
   < HTTP/1.1 200 OK
-  < Age: 490339
+  < Accept-Ranges: bytes
+  < Age: 302681
   < Cache-Control: max-age=604800
   < Content-Type: text/html; charset=UTF-8
-  < Date: Sun, 09 Oct 2022 07:16:12 GMT
-  < Etag: "3147526947+ident"
-  < Expires: Sun, 16 Oct 2022 07:16:12 GMT
+  < Date: Mon, 16 Jan 2023 10:40:54 GMT
+  < Etag: "3147526947+gzip"
+  < Expires: Mon, 23 Jan 2023 10:40:54 GMT
   < Last-Modified: Thu, 17 Oct 2019 07:18:26 GMT
-  < Server: ECS (nyb/1D11)
+  < Server: ECS (nyb/1D10)
   < Vary: Accept-Encoding
   < X-Cache: HIT
   < Content-Length: 1256
   < 
   { [1256 bytes data]
-  100  1256  100  1256    0     0   3888      0 --:--:-- --:--:-- --:--:--  3888
+  100  1256  100  1256    0     0   3313      0 --:--:-- --:--:-- --:--:--  3305100  1256  100  1256    0     0   3313      0 --:--:-- --:--:-- --:--:--  3305
   ,* Connection #0 to host example.com left intact
   <!doctype html>
   <html>
@@ -98,18 +111,24 @@
 * API
   [[file:api-management.png]]
 
-  API — Application Programming Interface
+  HTTP (WEB) API — Application Programming Interface
 
-** JSON -- JavaScript Object Notation
+** [[https://www.json.org/json-en.html][JSON]] -- JavaScript Object Notation
    [...] {}, True = true, False = false, None = null
 
-** YAML -- Yet Another Markup Language
+** [[https://yaml.org/][YAML]] -- Yet Another Markup Language
 
-** XML
+** [[https://www.w3.org/XML/][XML]] -- eXtended Markup Language
 
-** BJSON (binary)
+** [[http://bjson.org/][BJSON]] (binary)
 
-** ProtoBuf (binary)
+** [[https://developers.google.com/protocol-buffers][ProtoBuf]] (binary)
+
+   #+begin_src python
+     import requests
+     # API функции get
+     requests.get(...)
+   #+end_src
 
    - GET myapi.ru/json/?search=foobar
    - GET myapi.ru/xml/?search=foobar
@@ -117,32 +136,34 @@
 
 ** I
    #+begin_src bash :exports both :results output pp
-     curl https://svatky.adresa.info/json | jq
-   #+end_src
-
-   #+RESULTS:
-   #+begin_example
-   [
-     {
-       "date": "0910",
-       "name": "Štefan"
-     },
-     {
-       "date": "0910",
-       "name": "Sára"
-     }
-   ]
-   #+end_example
-** II
-   #+begin_src bash :exports both :results output
-     curl https://svatky.adresa.info/json?date=0710 | jq
+     curl https://svatky.adresa.info/json |jq
    #+end_src
 
    #+RESULTS:
    : [
    :   {
-   :     "date": "0710",
-   :     "name": "Justýna"
+   :     "date": "1601",
+   :     "name": "Ctirad"
+   :   }
+   : ]
+
+   #+begin_src bash :exports both :results output
+     curl https://svatky.adresa.info/xml
+   #+end_src
+
+   #+RESULTS:
+   : <?xml version="1.0" encoding="UTF-8"?><svatky><svatek><date>1601</date><name>Ctirad</name></svatek></svatky>
+
+** II
+   #+begin_src bash :exports both :results output
+     curl https://svatky.adresa.info/json?=0910 | jq
+   #+end_src
+
+   #+RESULTS:
+   : [
+   :   {
+   :     "date": "1601",
+   :     "name": "Ctirad"
    :   }
    : ]
 ** III
@@ -151,28 +172,29 @@
    #+end_src
 
    #+RESULTS:
-   [[file:/tmp/200-cat.png]]
+   [[file:200-cat.png]]
 
    #+begin_src bash :exports both :results file :file 404-cat.png
      curl --output - https://http.cat/404
    #+end_src
 
    #+RESULTS:
-   [[file:/tmp/200-cat.png]]
+   [[file:404-cat.png]]
 
    #+begin_src bash :exports both :results file :file 502-cat.png
      curl --output - https://http.cat/502
    #+end_src
 
    #+RESULTS:
-   [[file:/tmp/200-cat.png]]
+   [[file:502-cat.png]]
 
    #+begin_src bash :exports both :results file :file 418-cat.png
      curl --output - https://http.cat/418
    #+end_src
 
    #+RESULTS:
-   [[file:/tmp/200-cat.png]]
+   [[file:418-cat.png]]
+
 * Самописный API 1.
   #+begin_src python :exports code :tangle echo_socket.py :shebang "#!/usr/bin/env python3"
     import socket
@@ -516,7 +538,6 @@
     server {
         listen 80;
         # это будет дефолтный, не важно что написано в server_name, он единственный
-        server_name localhost 127.0.0.1;
 
         location / {
            root /var/html;

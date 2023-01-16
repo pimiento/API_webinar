@@ -1,29 +1,30 @@
-- [Клиент-серверная архитектура](#org8f86400)
-- [HTTP](#org82954da)
-- [API](#orgbf84cf5)
-  - [JSON &#x2013; JavaScript Object Notation](#org19eb097)
-  - [YAML &#x2013; Yet Another Markup Language](#org9071a53)
-  - [XML](#org1840b21)
-  - [BJSON (binary)](#org4f4a802)
-  - [ProtoBuf (binary)](#org2d9960f)
-  - [I](#org303f2c9)
-  - [II](#orgd545983)
-  - [III](#org5d78268)
-- [Самописный API 1.](#org33c1c6b)
-- [Самописный API 2.](#org987a5c7)
-- [соединяем всё вместе](#orga72e604)
-- [практика Microservices](#org72fac4d)
-  - [API1](#org9e209b3)
-  - [API2](#org0b271a3)
-- [Почитать](#org869aeb0)
-- [Вопросы?](#orgc4157a9)
+- [Клиент-серверная архитектура](#org38a57ff)
+- [HTTP](#orgb570318)
+- [API](#org51a3f70)
+  - [[JSON](https://www.json.org/json-en.html) &#x2013; JavaScript Object Notation](#org2f7d053)
+  - [[YAML](https://yaml.org/) &#x2013; Yet Another Markup Language](#org4d52ed5)
+  - [[XML](https://www.w3.org/XML/) &#x2013; eXtended Markup Language](#org11c35fb)
+  - [[BJSON](http://bjson.org/) (binary)](#org46f7431)
+  - [[ProtoBuf](https://developers.google.com/protocol-buffers) (binary)](#orgf982690)
+  - [I](#org9ff6af9)
+  - [II](#orga40fe0e)
+  - [III](#orgbf82919)
+- [Самописный API 1.](#org1887117)
+- [Самописный API 2.](#org6c335f1)
+- [соединяем всё вместе](#org810441b)
+- [практика Microservices](#orgc53a76d)
+  - [API1](#org5ee9915)
+  - [API2](#org117aef1)
+- [Почитать](#org343ca0a)
+- [Вопросы?](#orgdbc2d8c)
 
 
-<a id="org8f86400"></a>
+
+<a id="org38a57ff"></a>
 
 # Клиент-серверная архитектура
 
-![img](client_server.png)
+![img](client_server.png)  
 
 ```python
 from django.http import HttpResponse
@@ -36,26 +37,23 @@ def index(request):
 ```
 
 
-<a id="org82954da"></a>
+<a id="orgb570318"></a>
 
 # HTTP
 
-<span class="underline"><span class="underline">[Простым языком об HTTP](https://habr.com/ru/post/215117/?ysclid=l8xclejzey771685299)</span></span>
+<span class="underline"><span class="underline">[Простым языком об HTTP](https://habr.com/ru/post/215117/?ysclid=l8xclejzey771685299)</span></span>  
 
 ```bash
-curl -v http://example.com 2>&1
+curl -v http://example.com/index.html 2>&1
 ```
 
 ```bash
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed
-  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0*   Trying 93.184.216.34:80...
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0*   Trying 2606:2800:220:1:248:1893:25c8:1946:80...
 * TCP_NODELAY set
-*   Trying 2606:2800:220:1:248:1893:25c8:1946:80...
-* TCP_NODELAY set
-* Immediate connect fail for 2606:2800:220:1:248:1893:25c8:1946: Network is unreachable
-* Connected to example.com (93.184.216.34) port 80 (#0)
-> GET / HTTP/1.1
+* Connected to example.com (2606:2800:220:1:248:1893:25c8:1946) port 80 (#0)
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0> GET /index.html HTTP/1.1
 > Host: example.com
 > User-Agent: curl/7.68.0
 > Accept: */*
@@ -63,20 +61,20 @@ curl -v http://example.com 2>&1
 * Mark bundle as not supporting multiuse
 < HTTP/1.1 200 OK
 < Accept-Ranges: bytes
-< Age: 235682
+< Age: 304182
 < Cache-Control: max-age=604800
 < Content-Type: text/html; charset=UTF-8
-< Date: Sun, 09 Oct 2022 17:09:02 GMT
-< Etag: "3147526947+ident"
-< Expires: Sun, 16 Oct 2022 17:09:02 GMT
+< Date: Mon, 16 Jan 2023 11:05:55 GMT
+< Etag: "3147526947+gzip"
+< Expires: Mon, 23 Jan 2023 11:05:55 GMT
 < Last-Modified: Thu, 17 Oct 2019 07:18:26 GMT
-< Server: ECS (nyb/1D1B)
+< Server: ECS (nyb/1D10)
 < Vary: Accept-Encoding
 < X-Cache: HIT
 < Content-Length: 1256
 < 
 { [1256 bytes data]
-100  1256  100  1256    0     0   1754      0 --:--:-- --:--:-- --:--:--  1751100  1256  100  1256    0     0   1754      0 --:--:-- --:--:-- --:--:--  1751
+100  1256  100  1256    0     0   4257      0 --:--:-- --:--:-- --:--:--  4243
 * Connection #0 to host example.com left intact
 <!doctype html>
 <html>
@@ -112,7 +110,7 @@ curl -v http://example.com 2>&1
             width: auto;
         }
     }
-    </style>
+    </style>    
 </head>
 
 <body>
@@ -127,85 +125,91 @@ curl -v http://example.com 2>&1
 ```
 
 
-<a id="orgbf84cf5"></a>
+<a id="org51a3f70"></a>
 
 # API
 
-![img](api-management.png)
+![img](api-management.png)  
 
-API — Application Programming Interface
-
-
-<a id="org19eb097"></a>
-
-## JSON &#x2013; JavaScript Object Notation
-
-[&#x2026;] {}, True = true, False = false, None = null
+HTTP (WEB) API — Application Programming Interface  
 
 
-<a id="org9071a53"></a>
+<a id="org2f7d053"></a>
 
-## YAML &#x2013; Yet Another Markup Language
+## [JSON](https://www.json.org/json-en.html) &#x2013; JavaScript Object Notation
 
-
-<a id="org1840b21"></a>
-
-## XML
+[&#x2026;] {}, True = true, False = false, None = null  
 
 
-<a id="org4f4a802"></a>
+<a id="org4d52ed5"></a>
 
-## BJSON (binary)
+## [YAML](https://yaml.org/) &#x2013; Yet Another Markup Language
 
 
-<a id="org2d9960f"></a>
+<a id="org11c35fb"></a>
 
-## ProtoBuf (binary)
+## [XML](https://www.w3.org/XML/) &#x2013; eXtended Markup Language
+
+
+<a id="org46f7431"></a>
+
+## [BJSON](http://bjson.org/) (binary)
+
+
+<a id="orgf982690"></a>
+
+## [ProtoBuf](https://developers.google.com/protocol-buffers) (binary)
+
+```python
+import requests
+# API функции get
+requests.get(...)
+```
 
 -   GET myapi.ru/json/?search=foobar
 -   GET myapi.ru/xml/?search=foobar
 -   GET myapi.ru/?search=foobar&format=json
 
 
-<a id="org303f2c9"></a>
+<a id="org9ff6af9"></a>
 
 ## I
 
 ```bash
-curl https://svatky.adresa.info/json | jq
-```
-
-```
-[
-  {
-    "date": "0910",
-    "name": "Štefan"
-  },
-  {
-    "date": "0910",
-    "name": "Sára"
-  }
-]
-```
-
-
-<a id="orgd545983"></a>
-
-## II
-
-```bash
-curl https://svatky.adresa.info/json?date=0710 | jq
+curl https://svatky.adresa.info/json |jq
 ```
 
     [
       {
-        "date": "0710",
-        "name": "Justýna"
+        "date": "1601",
+        "name": "Ctirad"
+      }
+    ]
+
+```bash
+curl https://svatky.adresa.info/xml
+```
+
+    <?xml version="1.0" encoding="UTF-8"?><svatky><svatek><date>1601</date><name>Ctirad</name></svatek></svatky>
+
+
+<a id="orga40fe0e"></a>
+
+## II
+
+```bash
+curl https://svatky.adresa.info/json?=0910 | jq
+```
+
+    [
+      {
+        "date": "1601",
+        "name": "Ctirad"
       }
     ]
 
 
-<a id="org5d78268"></a>
+<a id="orgbf82919"></a>
 
 ## III
 
@@ -213,28 +217,28 @@ curl https://svatky.adresa.info/json?date=0710 | jq
 curl --output - https://http.cat/200
 ```
 
-![img](200-cat.png)
+![img](200-cat.png)  
 
 ```bash
 curl --output - https://http.cat/404
 ```
 
-![img](404-cat.png)
+![img](404-cat.png)  
 
 ```bash
 curl --output - https://http.cat/502
 ```
 
-![img](502-cat.png)
+![img](502-cat.png)  
 
 ```bash
 curl --output - https://http.cat/418
 ```
 
-![img](418-cat.png)
+![img](418-cat.png)  
 
 
-<a id="org33c1c6b"></a>
+<a id="org1887117"></a>
 
 # Самописный API 1.
 
@@ -318,14 +322,14 @@ my_server.serve_forever()
 ```
 
 
-<a id="org987a5c7"></a>
+<a id="org6c335f1"></a>
 
 # Самописный API 2.
 
-[foobar]("foobar/")
+<foobar>  
 
 
-<a id="orga72e604"></a>
+<a id="org810441b"></a>
 
 # соединяем всё вместе
 
@@ -375,7 +379,7 @@ $(document).ready(function () {
 ```
 
 
-<a id="org72fac4d"></a>
+<a id="orgc53a76d"></a>
 
 # практика Microservices
 
@@ -410,6 +414,9 @@ sudo cp webinar.conf /etc/nginx/conf.d/
 sudo nginx -t 2>&1
 sudo nginx -s reload 2>&1
 ```
+
+    nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+    nginx: configuration file /etc/nginx/nginx.conf test is successful
 
 ```javascript
 var send_log = function (level, message) {
@@ -537,7 +544,7 @@ $(document).ready(function () {
 ```
 
 
-<a id="org9e209b3"></a>
+<a id="org5ee9915"></a>
 
 ## API1
 
@@ -550,7 +557,7 @@ CMD python my_django2.py
 ```
 
 
-<a id="org0b271a3"></a>
+<a id="org117aef1"></a>
 
 ## API2
 
@@ -597,7 +604,6 @@ services:
 server {
     listen 80;
     # это будет дефолтный, не важно что написано в server_name, он единственный
-    server_name localhost 127.0.0.1;
 
     location / {
        root /var/html;
@@ -621,14 +627,14 @@ server {
 ```
 
 
-<a id="org869aeb0"></a>
+<a id="org343ca0a"></a>
 
 # Почитать
 
-[Ошибки при проектировании API](https://habr.com/ru/company/yandex/blog/442762/)
+[Ошибки при проектировании API](https://habr.com/ru/company/yandex/blog/442762/)  
 
 
-<a id="orgc4157a9"></a>
+<a id="orgdbc2d8c"></a>
 
 # Вопросы?
 

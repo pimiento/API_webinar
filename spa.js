@@ -1,4 +1,56 @@
 var send_log = function (level, message) {
+    $.post("http://localhost:8000/api/log/", {level: level, message: message})
+        .done( function (result) {
+            console.log("SUCCESS: " + result);
+        })
+        .fail( function (result) {
+            alert("FAIL: " + result);
+        });
+};
+
+var read_notifications = function () {
+    var ts_url = "http://localhost:9020";
+    $.get(ts_url).done(function (result) {
+        send_log("DBG", "Got current date data: " + result);
+        $.get("http://localhost:8000/api/notify/", {"ts": result["ts"]})
+            .done(function (notifications) {
+                send_log("got " + notifications.length + " notifications");
+                console.log(notifications);
+            });
+    }).fail(function (result) {send_log("ERR", result);});
+}
+
+$(document).ready(function () {
+    var timerId = setInterval(read_notifications, 3000);
+});
+
+var send_log = function (level, message) {
+    $.post("/api/log/", {level: level, message: message})
+        .done( function (result) {
+            console.log("SUCCESS: " + result);
+        })
+        .fail( function (result) {
+            console.log(result);
+            alert("FAIL: send_log");
+        });
+};
+
+var read_notifications = function () {
+    $.get("/api/ts/", function (result) {
+        send_log("DBG", "Got current date data: " + $.param(result));
+        $.get("/api/notify/", {"ts": result["ts"]})
+            .done(function (notifications) {
+                send_log("INF", "got " + notifications.length + " notifications");
+                console.log(notifications);
+            });
+    });
+}
+
+$(document).ready(function () {
+    var timerId = setInterval(read_notifications, 800);
+});
+
+var send_log = function (level, message) {
     $.post("/api/log/", {level: level, message: message})
         .done( function (result) {
             console.log("SUCCESS: " + result);
