@@ -8,6 +8,11 @@
 #+LATEX_HEADER: \usepackage{xlop}
 #+LATEX_HEADER: \usepackage{booktabs}
 #+OPTIONS: \n:t ^:nil num:nil ltoc:nil buttons:nil
+* Посещаемость
+  [[https://practicum.yandex.ru/webinar-form/python-developer-plus/][https://practicum.yandex.ru/webinar-form/python-developer-plus/]]
+
+  #+ATTR_LATEX: :width .47\textwidth
+  [[file:qrcode.png]]
 * Клиент-серверная архитектура
   [[file:client_server.png]]
 
